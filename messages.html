@@ -334,16 +334,17 @@
         setInterval(loadMessages, 3000); 
 window.onload = () => {
     const targetUserId = localStorage.getItem('selectedUserId');
+    const targetUsername = localStorage.getItem('selectedUsername'); // Get the name
     
     if (targetUserId) {
-        console.log("Auto-loading chat for user:", targetUserId);
-        
         activeReceiverId = targetUserId;
         document.getElementById('activeChatHeader').innerHTML = `
-            <span style="color: #FFFFFF; font-weight: 600;">Chatting with user ${targetUserId}</span>
-        `;   
+            <span style="color: #FFFFFF; font-weight: 600;">Chatting with ${targetUsername || 'User ' + targetUserId}</span>
+        `;
+        
         loadMessages();
-        localStorage.removeItem('selectedUserId'); 
+        localStorage.removeItem('selectedUserId');
+        localStorage.removeItem('selectedUsername'); 
     }
 };
         

@@ -268,8 +268,9 @@
     }
 
 
-function contactUser(targetUserId, skillName) {
+function contactUser(targetUserId, username) { 
     localStorage.setItem('selectedUserId', targetUserId);
+    localStorage.setItem('selectedUsername', username);
     window.location.href = 'messages.html';
 }
 
