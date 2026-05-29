@@ -1,13 +1,9 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
+require('dotenv').config(); // Allows your app to read environment variables
 
 const app = express();
-const PORT = 3000;
-
-// 1. Connection to pgAdmin Database
-const { Pool } = require('pg');
-require('dotenv').config(); // Allows your app to read environment variables
 
 // This setup works perfectly for both local development and Vercel hosting!
 const pool = new Pool({
@@ -22,6 +18,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
+// Explicit route root rule to serve index.html automatically when opening the domain link!
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // 3. The Login Route
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -31,7 +32,6 @@ app.post('/login', async (req, res) => {
             [email, password]
         );
         if (result.rows.length > 0) {
-            // Send user data back as a response
             const user = result.rows[0];
             res.send(`
                 <script>
@@ -78,7 +78,6 @@ app.get('/api/user-data', async (req, res) => {
 app.post('/add-post', async (req, res) => {
     const { post_type, skill_name, description } = req.body;
     try {
-        // Fetching the user who is posting
         const userRes = await pool.query('SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1');
         const userId = userRes.rows[0].user_id;
         
@@ -167,25 +166,20 @@ app.post('/api/update-pfp', async (req, res) => {
 // 12. Reply Message
 app.post('/api/reply-message', async (req, res) => {
     console.log("Data received from frontend:", req.body);
-
     const { message_text, receiverId, senderId } = req.body;
-
     try {
         const queryText = 'INSERT INTO messages (sender_id, receiver_id, message_text) VALUES ($1, $2, $3)';
         const values = [senderId, receiverId, message_text];
-        
         await pool.query(queryText, values);
-        
         console.log("Message saved successfully!");
         res.status(200).json({ success: true });
     } catch (err) {
-        // 3. This will tell us the EXACT database error in the terminal
         console.error("CRITICAL DATABASE ERROR:", err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-// 12.5 Get Message History (New!)
+// 13. Get Message History
 app.get('/api/get-messages', async (req, res) => {
     const { sender, receiver } = req.query;
     try {
@@ -203,25 +197,13 @@ app.get('/api/get-messages', async (req, res) => {
     }
 });
 
-app.get('/api/get-messages', async (req, res) => {
-    const { sender, receiver } = req.query;
-    try {
-        const result = await pool.query(
-            `SELECT * FROM messages 
-             WHERE (sender_id = $1 AND receiver_id = $2) 
-             OR (sender_id = $2 AND receiver_id = $1) 
-             ORDER BY timestamp ASC`,
-            [sender, receiver]
-        );
-        res.json(result.rows);
-    } catch (err) {
-        res.status(500).send("Error loading messages");
-    }
-});
+// 14. Start Server: ONLY runs if we are testing locally on your computer
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = 3000;
+  app.listen(PORT, () => {
+      console.log(`Skill Match Server Live: http://localhost:${PORT}`);
+  });
+}
 
-// 13. Start Server
-app.listen(PORT, () => {
-    console.log(`-----------------------------------------`);
-    console.log(`Skill Match Server Live: http://localhost:${PORT}`);
-    console.log(`-----------------------------------------`);
-});
+// Crucial for Vercel: Export the application handler module
+module.exports = app;
