@@ -226,22 +226,24 @@
             postDiv.id = `post-${post.post_id}`; 
             
             postDiv.innerHTML = `
-                <div>
-                    <strong style="color: #FFFFFF; font-size: 1.1rem; font-weight: 600;">${post.skill_name}</strong> 
-                    <span class="badge">${post.post_type}</span>
-                    ${isMyPost ? '<span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.2);">Your Post</span>' : ''}
-                    <p style="margin: 8px 0 0 0; color: #94A3B8; font-size: 0.9rem; line-height: 1.5;">${post.description}</p>
-                </div>
-                <div style="flex-shrink: 0; margin-left: 15px;">
-                    ${isMyPost ? `
-                        <button class="delete-btn" onclick="deletePost(${post.post_id})">Delete</button>
-                    ` : `
-                        <button class="msg-btn" onclick="contactUser(${post.user_id}, '${post.skill_name}')">
-                            Message
-                        </button>
-                    `}
-                </div>
-            `;
+    <div>
+        <strong style="color: #FFFFFF; font-size: 1.1rem; font-weight: 600;">${post.skill_name}</strong> 
+        <span class="badge">${post.post_type}</span>
+        ${isMyPost ? '<span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.2);">Your Post</span>' : ''}
+        <p style="margin: 8px 0 0 0; color: #94A3B8; font-size: 0.9rem; line-height: 1.5;">${post.description}</p>
+    </div>
+    
+    <div style="flex-shrink: 0; margin-left: 15px;">
+        ${isMyPost ? `
+            <button class="delete-btn" onclick="deletePost(${post.post_id})">Delete</button>
+        ` : `
+            <button class="msg-btn" onclick="contactUser(${post.user_id}, '${post.skill_name}')">
+                Message
+            </button>
+        `}
+    </div>
+`;
+
             container.appendChild(postDiv);
         });
     }
@@ -265,11 +267,13 @@
         }
     }
 
-    function contactUser(targetUserId, skillName) {
-        localStorage.setItem('selectedUserId', targetUserId);
-        localStorage.setItem('selectedChatTitle', skillName);
-        window.location.href = 'messages.html';
-    }
+
+function contactUser(targetUserId, skillName) {
+    console.log("Attempting to message user ID:", targetUserId); 
+    localStorage.setItem('selectedUserId', targetUserId);
+    localStorage.setItem('selectedChatTitle', skillName);
+    window.location.href = 'messages.html';
+}
 
     fetchUser();
 </script>

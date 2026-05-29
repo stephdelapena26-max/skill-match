@@ -354,17 +354,17 @@ async function loadChatWithUser(receiverId) {
         loadContacts();
         setInterval(loadMessages, 3000); 
 window.onload = () => {
-        const targetUserId = localStorage.getItem('selectedUserId');
-        
-        if (targetUserId) {
-            // This is the function that loads your conversation
-            // Make sure this matches the function name you already have in messages.html!
-            loadChatWithUser(targetUserId); 
-            
-            // Clean up so it doesn't try to reload this every time you refresh
-            localStorage.removeItem('selectedUserId'); 
-        }
-    };
+    const targetUserId = localStorage.getItem('selectedUserId');
+    console.log("Messages page loaded. Target User ID found:", targetUserId);
+
+    if (targetUserId) {
+        // We use a slight delay to ensure the DOM (the chat box) is ready
+        setTimeout(() => {
+            loadChatWithUser(targetUserId);
+            localStorage.removeItem('selectedUserId');
+        }, 100);
+    }
+};
         
     </script>
 </body>
