@@ -5,9 +5,11 @@ require('dotenv').config();
 
 const app = express();
 
-// 1. Database Connection (Neon Cloud / PostgreSQL)
+// 1. Database Connection (With explicit fallback for localhost)
+const databaseConnectionString = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_YIqB0m5yivWp@ep-plain-glade-a1sc7j3z-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: databaseConnectionString,
   ssl: {
     rejectUnauthorized: false
   }
@@ -101,22 +103,30 @@ app.post('/api/update-pfp', async (req, res) => {
   }
 });
 
-// 6. Posts Management API Endpoints (CRUD)
+// 6. Add Post (With Empty Table Protection & Error Logging)
 app.post('/add-post', async (req, res) => {
-  const { post_type, skill_name, description } = req.body;
-  try {
-    const userRes = await pool.query('SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1');
-    const userId = userRes.rows[0].user_id;
-    
-    await pool.query(
-      'INSERT INTO posts (user_id, post_type, skill_name, description) VALUES ($1, $2, $3, $4)',
-      [userId, post_type, skill_name, description]
-    );
-    res.redirect('/dashboard.html'); 
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error saving post.");
-  }
+    const { post_type, skill_name, description } = req.body;
+    try {
+        const userRes = await pool.query('SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1');
+        
+        // Safety Check: If no user exists in the database yet, handle it gracefully
+        if (userRes.rows.length === 0) {
+            console.error("DATABASE WARNING: No users exist in the database yet.");
+            return res.status(400).send("<h1>Error: You must create an account and log in first before posting!</h1><a href='/index.html'>Go to Registration/Login</a>");
+        }
+
+        const userId = userRes.rows[0].user_id;
+        
+        await pool.query(
+            'INSERT INTO posts (user_id, post_type, skill_name, description) VALUES ($1, $2, $3, $4)',
+            [userId, post_type, skill_name, description]
+        );
+        res.redirect('/dashboard.html'); 
+    } catch (err) {
+        // Crucial: Print the exact error message to your VS Code terminal console
+        console.error("CRITICAL POSTING DATABASE ERROR:", err.message);
+        res.status(500).send(`Error saving post: ${err.message}`);
+    }
 });
 
 app.get('/api/search-skills', async (req, res) => {
