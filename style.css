@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body {
-    background-color: #0B0F19; /* Deep dark blue background like the picture */
+    background-color: #0B0F19;
     color: #F3F4F6; /* Soft off-white text for readability */
     font-family: 'Inter', sans-serif;
     margin: 0; 
@@ -115,17 +115,15 @@ input::placeholder, textarea::placeholder {
     color: #6B7280;
 }
 
-/* Input Focus Glow (Blue-Green accent) */
 input:focus, select:focus, textarea:focus {
-    border-color: #06B6D4; /* Cyan/Teal border */
+    border-color: #06B6D4; 
     outline: none;
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); /* Soft outer teal glow */
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); 
     background-color: #111827;
 }
 
-/* Blue-Green / Vibrant Cyan Buttons */
 button, .submit-btn {
-    background-color: #3B82F6; /* Vibrant Blue base */
+    background-color: #3B82F6; 
     color: white;
     border: none;
     padding: 14px 20px;
@@ -140,7 +138,7 @@ button, .submit-btn {
 }
 
 button:hover {
-    background-color: #2563EB; /* Darker rich blue on hover */
+    background-color: #2563EB; 
     box-shadow: 0 4px 16px rgba(59, 130, 246, 0.45);
     transform: translateY(-1px);
 }
@@ -149,21 +147,20 @@ button:active {
     transform: translateY(0);
 }
 
-/* Links & Accents */
 a {
-    color: #38BDF8; /* Sky Blue/Cyan accents */
+    color: #38BDF8;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #06B6D4; /* Shifts to teal on hover */
+    color: #06B6D4; 
     text-decoration: underline;
 }
 
 .logout-btn {
-    color: #EF4444 !important; /* Soft crimson red for modern dark mode logout */
+    color: #EF4444 !important; 
 }
 
 /* Profile Bio customization */
@@ -172,4 +169,27 @@ a:hover {
     resize: none;
     border: 1px dashed #4B5563; 
     background-color: #1F2937;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .messenger-container {
+        flex-direction: column !important; /* Forces layout to stack vertically */
+        height: 90vh;
+        margin: 10px; 
+    }
+    
+    .sidebar {
+        width: 100% !important; /* Forces sidebar to take full width */
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        height: auto;
+        max-height: 220px; /* Limits the sidebar height so chats have room below */
+        overflow-y: auto;
+    }
+    
+    .chat-area {
+        width: 100% !important;
+        flex: 1;
+    }
 }
