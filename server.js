@@ -6,18 +6,21 @@ const app = express();
 const PORT = 3000;
 
 // 1. Connection to pgAdmin Database
+const { Pool } = require('pg');
+require('dotenv').config(); // Allows your app to read environment variables
+
+// This setup works perfectly for both local development and Vercel hosting!
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'skill_match_db',
-    password: 'agua1226', 
-    port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Neon requires SSL encryption for live cloud connections
+  }
 });
 
 // 2. Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('.'));
+app.use(express.static(__dirname));
 
 // 3. The Login Route
 app.post('/login', async (req, res) => {
