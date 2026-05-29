@@ -133,10 +133,10 @@ app.get('/api/search-skills', async (req, res) => {
   const { query } = req.query;
   try {
     const searchQuery = `%${query || ''}%`;
-    const result = await pool.query(
-      'SELECT * FROM posts WHERE skill_name ILIKE $1 OR description ILIKE $1 ORDER BY post_id DESC',
-      [searchQuery]
-    );
+    // Ensure this returns user_id
+const result = await pool.query(
+    'SELECT post_id, user_id, skill_name, description, post_type FROM posts ORDER BY post_id DESC'
+);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: "Search failed" });
@@ -168,6 +168,21 @@ app.get('/api/my-contacts', async (req, res) => {
     console.error(err);
     res.status(500).json([]);
   }
+});
+
+// New API route for public profile viewing
+app.get('/api/public-profile/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const result = await pool.query(
+            'SELECT username, bio, pfp_icon FROM users WHERE user_id = $1', 
+            [userId]
+        );
+        if (result.rows.length === 0) return res.status(404).send("User not found");
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).send("Server error");
+    }
 });
 
 app.post('/api/reply-message', async (req, res) => {

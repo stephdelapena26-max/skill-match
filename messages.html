@@ -244,6 +244,27 @@
             loadMessages();
         }
 
+        // 1. The function that calls the server to get the messages
+async function loadChatWithUser(receiverId) {
+    const senderId = localStorage.getItem('userId'); // Get your own ID
+    
+    try {
+        const res = await fetch(`/api/get-messages?sender=${senderId}&receiver=${receiverId}`);
+        const messages = await res.json();
+        
+        const chatBox = document.getElementById('chat-box'); 
+        chatBox.innerHTML = ""; 
+        
+        messages.forEach(msg => {
+            const div = document.createElement('div');
+            div.innerText = msg.message_text;
+            chatBox.appendChild(div);
+        });
+    } catch (err) {
+        console.error("Could not load messages:", err);
+    }
+}
+
         // 2. Fetch History
         async function loadMessages() {
             if (!activeReceiverId || !currentUserId) return;
@@ -332,6 +353,19 @@
 
         loadContacts();
         setInterval(loadMessages, 3000); 
+window.onload = () => {
+        const targetUserId = localStorage.getItem('selectedUserId');
+        
+        if (targetUserId) {
+            // This is the function that loads your conversation
+            // Make sure this matches the function name you already have in messages.html!
+            loadChatWithUser(targetUserId); 
+            
+            // Clean up so it doesn't try to reload this every time you refresh
+            localStorage.removeItem('selectedUserId'); 
+        }
+    };
+        
     </script>
 </body>
 </html>
