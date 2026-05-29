@@ -355,14 +355,11 @@ async function loadChatWithUser(receiverId) {
         setInterval(loadMessages, 3000); 
 window.onload = () => {
     const targetUserId = localStorage.getItem('selectedUserId');
-    console.log("Messages page loaded. Target User ID found:", targetUserId);
-
+    
     if (targetUserId) {
-        // We use a slight delay to ensure the DOM (the chat box) is ready
-        setTimeout(() => {
-            loadChatWithUser(targetUserId);
-            localStorage.removeItem('selectedUserId');
-        }, 100);
+        console.log("Auto-loading chat for user:", targetUserId);
+        loadMessages(targetUserId); 
+        localStorage.removeItem('selectedUserId'); 
     }
 };
         

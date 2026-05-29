@@ -269,9 +269,7 @@
 
 
 function contactUser(targetUserId, skillName) {
-    console.log("Attempting to message user ID:", targetUserId); 
     localStorage.setItem('selectedUserId', targetUserId);
-    localStorage.setItem('selectedChatTitle', skillName);
     window.location.href = 'messages.html';
 }
 
