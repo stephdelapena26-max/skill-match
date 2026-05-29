@@ -65,29 +65,29 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// 5. User Profile API Endpoints
 app.get('/api/user-data', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT user_id, username, email, bio, pfp_icon FROM users ORDER BY user_id DESC LIMIT 1');
-    if (result.rows.length === 0) return res.status(404).send("User not found");
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error fetching data");
-  }
+    const userId = req.query.userId; // Matches the ?userId= sent by frontend
+    try {
+        const result = await pool.query(
+            'SELECT user_id, username, email, bio, pfp_icon FROM users WHERE user_id = $1', 
+            [userId]
+        );
+        if (result.rows.length === 0) return res.status(404).send("User not found");
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching data");
+    }
 });
 
 app.post('/api/update-bio', async (req, res) => {
-  const { bio } = req.body;
-  try {
-    await pool.query(
-      'UPDATE users SET bio = $1 WHERE user_id = (SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1)',
-      [bio]
-    );
-    res.status(200).json({ success: true, message: "Bio updated!" });
-  } catch (err) {
-    res.status(500).json({ success: false });
-  }
+    const { bio, userId } = req.body; // You will need to send userId from the frontend now!
+    try {
+        await pool.query('UPDATE users SET bio = $1 WHERE user_id = $2', [bio, userId]);
+        res.status(200).json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false });
+    }
 });
 
 app.post('/api/update-pfp', async (req, res) => {

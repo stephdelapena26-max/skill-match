@@ -117,23 +117,34 @@
         }
 
         async function loadProfile() {
-            try {
-                const res = await fetch('/api/user-data');
-                const user = await res.json();
-                
-                document.getElementById('profile-username').innerText = user.username;
-                document.getElementById('profile-email').innerText = user.email;
-                document.getElementById('profile-bio').value = user.bio || "";
-                
-                if (user.pfp_icon) {
-                    document.getElementById('pfp-icon').innerText = user.pfp_icon;
-                } else {
-                    document.getElementById('pfp-icon').innerText = user.username.charAt(0).toUpperCase();
-                }
-            } catch (err) {
-                console.log("Error loading profile");
-            }
+    // 1. Get the ID stored when you logged in
+    const userId = localStorage.getItem('userId');
+    
+    if (!userId) {
+        alert("Please log in first!");
+        window.location.href = '/index.html';
+        return;
+    }
+
+    try {
+        // 2. Pass the ID as a query parameter (?userId=...)
+        const res = await fetch(`/api/user-data?userId=${userId}`);
+        const user = await res.json();
+        
+        // 3. Update the UI with the returned data
+        document.getElementById('profile-username').innerText = user.username;
+        document.getElementById('profile-email').innerText = user.email;
+        document.getElementById('profile-bio').value = user.bio || "";
+        
+        if (user.pfp_icon) {
+            document.getElementById('pfp-icon').innerText = user.pfp_icon;
+        } else {
+            document.getElementById('pfp-icon').innerText = user.username.charAt(0).toUpperCase();
         }
+    } catch (err) {
+        console.error("Error loading profile:", err);
+    }
+}
 
         async function saveBio() {
             const newBio = document.getElementById('profile-bio').value;
