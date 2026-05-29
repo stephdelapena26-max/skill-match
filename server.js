@@ -130,17 +130,19 @@ app.post('/add-post', async (req, res) => {
 });
 
 app.get('/api/search-skills', async (req, res) => {
-  const { query } = req.query;
-  try {
-    const searchQuery = `%${query || ''}%`;
-    // Ensure this returns user_id
-const result = await pool.query(
-    'SELECT post_id, user_id, skill_name, description, post_type FROM posts ORDER BY post_id DESC'
-);
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: "Search failed" });
-  }
+    try {
+        // This query fetches the post details AND the matching username
+        const result = await pool.query(`
+            SELECT p.post_id, p.user_id, p.skill_name, p.description, p.post_type, u.username 
+            FROM posts p
+            JOIN users u ON p.user_id = u.user_id
+            ORDER BY p.post_id DESC
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Search failed" });
+    }
 });
 
 app.delete('/api/delete-post/:postId', async (req, res) => {
