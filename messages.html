@@ -355,10 +355,9 @@ async function loadChatWithUser(receiverId) {
         setInterval(loadMessages, 3000); 
 window.onload = () => {
     const targetUserId = localStorage.getItem('selectedUserId');
-    
     if (targetUserId) {
         console.log("Auto-loading chat for user:", targetUserId);
-        loadMessages(targetUserId); 
+        loadChat(targetUserId); 
         localStorage.removeItem('selectedUserId'); 
     }
 };
