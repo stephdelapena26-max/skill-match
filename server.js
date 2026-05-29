@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
-// Explicit route root rule to serve index.html automatically when opening the domain link!
+// Explicit root route to serve index.html automatically when opening the main link!
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
