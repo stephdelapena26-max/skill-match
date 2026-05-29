@@ -1,0 +1,27 @@
+{
+  "name": "school_template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stephdelapena26-max/skill-match.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stephdelapena26-max/skill-match/issues"
+  },
+  "homepage": "https://github.com/stephdelapena26-max/skill-match#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "pg": "^8.21.0"
+  }
+}

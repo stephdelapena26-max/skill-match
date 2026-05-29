@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Skill Match</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Modern Split Messenger layout for Dark Blue-Green UI */
+        .messenger-container {
+            display: flex;
+            background: #111827; /* Dark slate matching the primary card surfaces */
+            height: 82vh;
+            width: 100%;
+            max-width: 1150px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        /* Sidebar user navigation list */
+        .sidebar { 
+            width: 340px; 
+            border-right: 1px solid rgba(255, 255, 255, 0.06); 
+            display: flex; 
+            flex-direction: column; 
+            background: #0B0F19; /* Deeper base dark background */
+        }
+
+        .sidebar-header { 
+            padding: 24px 20px; 
+            font-size: 1.35rem; 
+            font-weight: 700; 
+            color: #FFFFFF; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            letter-spacing: -0.02em;
+        }
+
+        /* Interactive list slots for current contacts */
+        .contact { 
+            display: flex; 
+            align-items: center; 
+            padding: 14px 20px; 
+            gap: 14px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            color: #94A3B8;
+        }
+
+        .contact:hover { 
+            background: rgba(255, 255, 255, 0.03); 
+            color: #FFFFFF;
+        }
+
+        .contact.active { 
+            background: rgba(6, 182, 212, 0.1); /* Translucent teal window focus */
+            color: #06B6D4; /* Cyan text highlighting active channel */
+            border-left: 3px solid #06B6D4;
+        }
+
+        /* Round profile avatar components */
+        .pfp { 
+            width: 46px; 
+            height: 46px; 
+            border-radius: 50%; 
+            background: #3B82F6; /* Vibrant blue avatar fallback badge */
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 600; 
+            flex-shrink: 0; 
+            font-size: 1.1rem; 
+        }
+
+        .pfp-small { 
+            width: 32px; 
+            height: 32px; 
+            font-size: 0.85rem; 
+            background: #06B6D4; /* Cyan tint accentuating the current chat partner */
+        }
+
+        /* Message viewing block panel layout */
+        .chat-area { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background: #111827; 
+        }
+
+        .chat-header { 
+            padding: 18px 25px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: 600; 
+            color: #FFFFFF;
+            background: #111827;
+        }
+
+        #chatDisplay { 
+            flex: 1; 
+            padding: 24px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            background: #111827;
+        }
+
+        .msg-row { 
+            display: flex; 
+            gap: 8px; 
+            width: 100%; 
+            align-items: flex-end; 
+        }
+
+        .msg-row.sent-row { 
+            justify-content: flex-end; 
+        }
+
+        /* Chat bubbles styled for premium readability metrics */
+        .bubble { 
+            max-width: 60%; 
+            padding: 11px 16px; 
+            border-radius: 18px; 
+            font-size: 0.92rem; 
+            line-height: 1.45;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Received text bubbles: Gray-slate tone */
+        .received { 
+            background: #1F2937; 
+            color: #E5E7EB; 
+            border-bottom-left-radius: 4px; 
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* Sent text bubbles: Rich core blue */
+        .sent { 
+            background: #3B82F6; 
+            color: white; 
+            border-bottom-right-radius: 4px; 
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Message writer text tracking row bar */
+        .input-bar { 
+            padding: 15px 20px; 
+            border-top: 1px solid rgba(255, 255, 255, 0.06); 
+            display: flex; 
+            gap: 12px; 
+            background: #111827;
+            align-items: center;
+        }
+
+        #replyText { 
+            border-radius: 24px; 
+            padding: 12px 20px; 
+            background: #1F2937; 
+            border: 1px solid #374151; 
+            color: #FFFFFF;
+            flex: 1; 
+            resize: none; 
+            height: 44px; 
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            box-sizing: border-box;
+            margin: 0;
+            transition: all 0.2s ease;
+        }
+
+        #replyText:focus {
+            border-color: #06B6D4;
+            outline: none;
+            background-color: #1A2232;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        #sendBtn { 
+            width: auto; 
+            border-radius: 24px; 
+            padding: 0 22px;
+            height: 44px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><strong style="color: #FFFFFF; font-size: 1.2rem; letter-spacing: -0.02em;">Skill Match</strong></div>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="index.html" class="logout-btn" onclick="localStorage.clear()">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <div class="messenger-container">
+        <div class="sidebar">
+            <div class="sidebar-header">Chats</div>
+            <div id="contacts-container"></div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header" id="activeChatHeader" style="color: #94A3B8; font-weight: 400;">
+                Select a conversation to get started
+            </div>
+            
+            <div id="chatDisplay"></div>
+
+            <form id="replyForm" class="input-bar">
+                <textarea id="replyText" placeholder="Write a message..." required></textarea>
+                <button type="submit" class="submit-btn" id="sendBtn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let activeReceiverId = null;
+        const currentUserId = localStorage.getItem('userId');
+
+        // 1. Open Chat (Applies custom active tracking classes dynamically)
+        async function openChat(name, initial, userId, element) {
+            activeReceiverId = userId;
+            
+            // Clear current active items
+            document.querySelectorAll('.contact').forEach(item => item.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            document.getElementById('activeChatHeader').innerHTML = `
+                <div class="pfp pfp-small">${initial}</div>
+                <span style="color: #FFFFFF; font-weight: 600;">${name}</span>
+            `;
+            loadMessages();
+        }
+
+        // 2. Fetch History
+        async function loadMessages() {
+            if (!activeReceiverId || !currentUserId) return;
+            const chatDisplay = document.getElementById('chatDisplay');
+            
+            try {
+                const res = await fetch(`/api/get-messages?sender=${currentUserId}&receiver=${activeReceiverId}`);
+                const messages = await res.json();
+                
+                chatDisplay.innerHTML = ""; 
+                messages.forEach(msg => {
+                    const row = document.createElement('div');
+                    const isSentByMe = msg.sender_id == currentUserId;
+                    row.className = isSentByMe ? "msg-row sent-row" : "msg-row";
+                    row.innerHTML = `<div class="bubble ${isSentByMe ? 'sent' : 'received'}">${msg.message_text}</div>`;
+                    chatDisplay.appendChild(row);
+                });
+                chatDisplay.scrollTo({ top: chatDisplay.scrollHeight });
+            } catch (err) {
+                console.error("Error loading messages:", err);
+            }
+        }
+
+        // 3. Load Contacts
+        async function loadContacts() {
+            const container = document.getElementById('contacts-container');
+            try {
+                const res = await fetch('/api/my-contacts');
+                const contacts = await res.json();
+
+                if (contacts.length === 0) {
+                    container.innerHTML = '<p style="padding:20px; color:#6B7280; font-size:0.85rem;">No active conversations.</p>';
+                    return;
+                }
+
+                container.innerHTML = ''; 
+                contacts.forEach(user => {
+                    const contactDiv = document.createElement('div');
+                    contactDiv.className = 'contact';
+                    const icon = user.pfp_icon || user.username[0].toUpperCase();
+                    contactDiv.innerHTML = `
+                        <div class="pfp">${icon}</div>
+                        <div class="contact-info">
+                            <span class="contact-name" style="font-weight: 500; display:block;">${user.username}</span>
+                        </div>
+                    `;
+                    // Pass tracking element references to inject live focus visual styles
+                    contactDiv.onclick = () => openChat(user.username, icon, user.user_id, contactDiv);
+                    container.appendChild(contactDiv);
+                });
+            } catch (err) {
+                console.error("Failed to load contacts");
+            }
+        }
+
+        // 4. Handle Sending (Merged Logic)
+        document.getElementById('replyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('replyText').value;
+            const senderId = localStorage.getItem('userId');
+
+            if (!activeReceiverId || !senderId) {
+                alert("Please select a user to chat with.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/reply-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        message_text: text, 
+                        receiverId: activeReceiverId,
+                        senderId: senderId 
+                    })
+                });
+
+                if (res.ok) {
+                    document.getElementById('replyText').value = "";
+                    loadMessages(); 
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+            }
+        });
+
+        loadContacts();
+        setInterval(loadMessages, 3000); 
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Skills - Skill Match</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Container configuration mapping dashboard dimensions */
+        .search-wrapper {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1, h3 {
+            text-align: left;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.025em;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+
+        /* Results Display Card Container */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        /* Redesigned Match Card mapping the global post feed card structure */
+        .match-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #1F2937; /* Dark grayish-blue elements */
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #06B6D4; /* Cyan glowing left accent line */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            border-left-color: #38BDF8; /* Vibrates brighter on user focus interaction */
+        }
+
+        .match-info h4 {
+            margin: 0 0 4px 0;
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .match-info p {
+            margin: 0;
+            color: #94A3B8;
+            font-size: 0.85rem;
+        }
+
+        /* Explicit dimensions forcing match actions into clean inline modules */
+        .match-action-btn {
+            width: auto !important;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><strong style="color: #FFFFFF; font-size: 1.2rem; letter-spacing: -0.02em;">Skill Match</strong></div>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="messages.html">Messages</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="search-wrapper">
+            
+            <section class="content-box">
+                <h1>Find a Skill Match</h1>
+                <div class="search-section" style="margin-bottom: 0;">
+                    <input type="text" placeholder="Search for skills (e.g. Web Design)..." style="margin: 0;">
+                    <button type="button" style="width: auto;">Search</button>
+                </div>
+            </section>
+
+            <section class="content-box">
+                <h3>Available Matches</h3>
+                <div class="results-container">
+                    
+                    <div class="match-card">
+                        <div class="match-info">
+                            <h4>Graphic Design</h4>
+                            <p>Posted by: <span style="color: #38BDF8; font-weight: 500;">Alex</span></p>
+                        </div>
+                        <div style="flex-shrink: 0; margin-left: 15px;">
+                            <a href="messages.html">
+                                <button type="button" class="submit-btn match-action-btn">Send Message / Match</button>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+</html>

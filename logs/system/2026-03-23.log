@@ -1,0 +1,6 @@
+2026/03/23 07:46:55
+INFO: 2026/03/23 07:46:55 /api/public/v1/: - - - - : HEALTHCHECK SUCCESS : - - - -
+INFO: 2026/03/23 07:46:55 /api/public/v1/: PROCESS TIME: 2026/03/23 07:46:55
+INFO: 2026/03/23 07:46:55 /api/public/v1/: REQUEST: NO REQUEST BODY
+INFO: 2026/03/23 07:46:55 /api/public/v1/: RESPONSE: map[message:This service is running. status:success]
+INFO: 2026/03/23 07:46:55 /api/public/v1/: STATUS: 200

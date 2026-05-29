@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Skill - Skill Match</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Centers the standalone card perfectly on the screen */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Matches the layout style of the Sign Up card in your picture */
+        .post-card-container {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 0; /* Clear baseline margins for standalone alignment */
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 26px;
+            letter-spacing: -0.025em;
+        }
+
+        label {
+            color: #94A3B8; /* Muted gray-blue labels */
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: block;
+            margin-top: 14px;
+        }
+
+        /* Utility cancel link styled as a subtle bottom action button */
+        .cancel-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-box post-card-container">
+        <h1>Post a New Skill</h1>
+        
+        <form action="dashboard.html">
+            <label>Skill Name:</label>
+            <input type="text" placeholder="e.g., Java Programming" required>
+            
+            <label>Description:</label>
+            <textarea placeholder="Describe what you can offer or what you need..." rows="4" style="font-family: inherit; resize: none;"></textarea>
+            
+            <label>Type:</label>
+            <select>
+                <option value="offer">I am Offering this skill</option>
+                <option value="request">I am Requesting this skill</option>
+            </select>
+            
+            <button type="submit" class="submit-btn" style="margin-top: 15px;">Post Skill</button>
+            <a href="dashboard.html" class="cancel-link">Cancel</a>
+        </form>
+    </div>
+
+</body>
+</html>

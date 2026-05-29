@@ -1,0 +1,175 @@
+/* Import Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    background-color: #0B0F19; /* Deep dark blue background like the picture */
+    color: #F3F4F6; /* Soft off-white text for readability */
+    font-family: 'Inter', sans-serif;
+    margin: 0; 
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 50% -20%, #1E293B, #0B0F19); /* Subtle dark gradient glow */
+}
+
+/* Navigation bar matching the dark aesthetic */
+nav {
+    background-color: rgba(15, 23, 42, 0.8); /* Semi-transparent dark blue */
+    backdrop-filter: blur(12px); /* Glassmorphism effect */
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky; 
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; 
+    gap: 25px;
+}
+
+nav a {
+    color: #94A3B8;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #38BDF8; /* Electric blue hover */
+}
+
+/* Center everything inside the container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    padding: 60px 20px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 80px);
+}
+
+/* Search Bar Styling - Deep Blue/Green themed */
+.search-section {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.search-section input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    color: white;
+}
+
+/* Cards & Sign-up/Login Boxes (The Modal style from your screenshot) */
+.content-box {
+    background-color: #111827; /* Dark slate box */
+    color: #F3F4F6;
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Soft subtle border */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
+    width: 100%;
+    max-width: 480px; 
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Header Text Styles (Matches 'Assignment Countdown Planner') */
+h1, h2, h3 {
+    color: #FFFFFF;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-align: center;
+}
+
+/* Inputs & Selects styled exactly like the form fields in the image */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    margin: 10px 0 20px 0;
+    background-color: #1F2937; /* Dark gray-blue input fill */
+    border: 1px solid #374151; /* Subtle border */
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Input Placeholder color */
+input::placeholder, textarea::placeholder {
+    color: #6B7280;
+}
+
+/* Input Focus Glow (Blue-Green accent) */
+input:focus, select:focus, textarea:focus {
+    border-color: #06B6D4; /* Cyan/Teal border */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); /* Soft outer teal glow */
+    background-color: #111827;
+}
+
+/* Blue-Green / Vibrant Cyan Buttons */
+button, .submit-btn {
+    background-color: #3B82F6; /* Vibrant Blue base */
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    width: 100%;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+button:hover {
+    background-color: #2563EB; /* Darker rich blue on hover */
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.45);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Links & Accents */
+a {
+    color: #38BDF8; /* Sky Blue/Cyan accents */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #06B6D4; /* Shifts to teal on hover */
+    text-decoration: underline;
+}
+
+.logout-btn {
+    color: #EF4444 !important; /* Soft crimson red for modern dark mode logout */
+}
+
+/* Profile Bio customization */
+#profile-bio {
+    font-family: inherit;
+    resize: none;
+    border: 1px dashed #4B5563; 
+    background-color: #1F2937;
+}
