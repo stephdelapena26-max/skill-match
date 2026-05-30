@@ -131,10 +131,11 @@ app.post('/add-post', async (req, res) => {
 
 app.get('/api/search-skills', async (req, res) => {
     try {
-        const result = await pool.query(`
+        // This query fetches the post details AND the matching username cleanly
+const result = await pool.query(`
     SELECT 
         p.post_id, 
-        p.user_id, 
+        p.user_id AS author_id, 
         p.skill_name, 
         p.description, 
         p.post_type, 
