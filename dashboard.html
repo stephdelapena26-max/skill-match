@@ -252,7 +252,7 @@ async function submitPost(event) {
     posts.forEach(post => {
         console.log("Comparing Post Owner ID:", post.author_id, "with Logged-In User ID:", currentUserId);
 
-    const isMyPost = post.author_id == currentUserId; 
+    const isMyPost = (post.author_id == currentUserId) || (post.user_id == currentUserId);
     const postDiv = document.createElement('div');
         postDiv.className = "post-card";
         postDiv.id = `post-${post.post_id}`; 
@@ -269,7 +269,7 @@ async function submitPost(event) {
     ${isMyPost ? `
         <button class="delete-btn" onclick="deletePost(${post.post_id})">Delete</button>
     ` : `
-        <button class="msg-btn" onclick="contactUser(${post.author_id}, '${post.username}')">
+        <button class="msg-btn" onclick="contactUser(${post.author_id || post.user_id}, '${post.username}')">
             Message
         </button>
     `}
