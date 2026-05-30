@@ -159,13 +159,44 @@
                 <textarea name="description" rows="4" placeholder="Describe what you offer or what you need..."></textarea>
                 
                 <button type="submit" class="submit-btn" style="margin-top: 10px;">Post to Skill Match</button>
-            </form>
+            <form id="createPostForm" onsubmit="submitPost(event)"></form>
+
         </section>
     </div>
 
 <script>
     let currentUserId = null;
+async function submitPost(event) {
+    event.preventDefault(); 
 
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const postData = {
+        user_id: currentUserId, 
+        post_type: formData.get('post_type'),
+        skill_name: formData.get('skill_name'),
+        description: formData.get('description')
+    };
+
+    try {
+        const res = await fetch('/api/add-post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData)
+        });
+
+        if (res.ok) {
+            alert("Post created successfully!");
+            form.reset(); 
+            loadAllPosts(); 
+        } else {
+            alert("Failed to submit post.");
+        }
+    } catch (err) {
+        console.error("Error creating post:", err);
+    }
+}
     async function fetchUser() {
         const savedId = localStorage.getItem('userId');
         const savedName = localStorage.getItem('username');
