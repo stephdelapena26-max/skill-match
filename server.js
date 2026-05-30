@@ -131,13 +131,18 @@ app.post('/add-post', async (req, res) => {
 
 app.get('/api/search-skills', async (req, res) => {
     try {
-        // This query fetches the post details AND the matching username
         const result = await pool.query(`
-            SELECT p.post_id, p.user_id, p.skill_name, p.description, p.post_type, u.username 
-            FROM posts p
-            JOIN users u ON p.user_id = u.user_id
-            ORDER BY p.post_id DESC
-        `);
+    SELECT 
+        p.post_id, 
+        p.user_id, 
+        p.skill_name, 
+        p.description, 
+        p.post_type, 
+        u.username 
+    FROM posts p
+    JOIN users u ON p.user_id = u.user_id
+    ORDER BY p.post_id DESC
+`);
         res.json(result.rows);
     } catch (err) {
         console.error(err);
